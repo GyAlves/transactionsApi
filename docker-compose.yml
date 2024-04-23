@@ -1,0 +1,14 @@
+
+version: '3'
+
+services:
+  api-transactions:
+    image: bitnami/postgresql
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRESQL_USER: gyas@transactions
+      POSTGRESQL_PASSWORD: gyas@transactions123!
+      POSTGRESQL_DATABASE: apitransactions
+
+    
