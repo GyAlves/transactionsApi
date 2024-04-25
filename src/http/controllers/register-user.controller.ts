@@ -9,7 +9,7 @@ import { PrismaUserRepository } from '../../repositories/prisma/prisma-users.rep
 import { RegisterUserUseCase } from '../../use-case/register-customer.use-case';
 
 // error-handling
-import { UserAlreadyExists } from '@/use-case/errors/user-already-exists.error';
+import {  UserAlreadyExistsError } from '@/use-case/errors/user-already-exists.error';
 
 export async function RegisterUserController(request: FastifyRequest, reply: FastifyReply) {
 
@@ -32,7 +32,7 @@ export async function RegisterUserController(request: FastifyRequest, reply: Fas
 
     } catch (error) {
         
-        if(error instanceof UserAlreadyExists) {
+        if(error instanceof UserAlreadyExistsError) {
             reply.status(409).send({ error: error.message })
         }
 
