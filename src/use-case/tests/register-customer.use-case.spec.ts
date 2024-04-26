@@ -1,23 +1,29 @@
 // dependencies
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { compare } from 'bcryptjs';
 
 // repository
 import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-users.repository";
 
 // use-cases
-import { RegisterUserUseCase } from "./register-customer.use-case";
+import { RegisterUserUseCase } from "../register-customer.use-case";
 
 // error-handling
-import { UserAlreadyExistsError } from "./errors/user-already-exists.error";
+import { UserAlreadyExistsError } from "../errors/user-already-exists.error";
+
+let prismaUserRepository: InMemoryUserRepository;
+let sut: RegisterUserUseCase;
 
 describe('Register User Case', () => {
 
+    beforeEach(() => {
+        prismaUserRepository = new InMemoryUserRepository();
+        sut = new RegisterUserUseCase(prismaUserRepository);
+    });
+
     it('should be able to register user', async () => {
-        const prismaUserRepository = new InMemoryUserRepository();
-        const registerUserCase = new RegisterUserUseCase(prismaUserRepository);
  
-        const { user } = await registerUserCase.execute({
+        const { user } = await sut.execute({
          name: 'John Doe',
          email: 'johndoe@email.com', 
          password: '123456'
@@ -27,10 +33,8 @@ describe('Register User Case', () => {
      });
 
     it('should be able to hash password upon registration', async () => {
-       const prismaUserRepository = new InMemoryUserRepository();
-       const registerUserCase = new RegisterUserUseCase(prismaUserRepository);
 
-       const { user } = await registerUserCase.execute({
+       const { user } = await sut.execute({
         name: 'John Doe',
         email: 'johndoe@email.com', 
         password: '123456'
@@ -41,19 +45,17 @@ describe('Register User Case', () => {
     });
 
     it('should not be able to register use with same email twice', async () => {
-        const prismaUserRepository = new InMemoryUserRepository();
-        const registerUserCase = new RegisterUserUseCase(prismaUserRepository);
          
         const email = 'johndoe@email.com';
 
-        await registerUserCase.execute({
+        await sut.execute({
          name: 'John Doe',
          email, 
          password: '123456'
         });
 
         await expect(() => 
-            registerUserCase.execute({
+            sut.execute({
              name: 'John Doe',
              email, 
              password: '123456'
