@@ -5,12 +5,18 @@ import { Prisma } from "@prisma/client";
 // interfaces
 import { IGymsRepository } from "../gyms-repository.interface";
 
-export class PrismaGymRepository implements IGymsRepository  {
-    async findById(id: string) {
-        // const user = await prismaDatabase.user.findUnique({
-        //     where: { id }
+export class PrismaGymsRepository implements IGymsRepository  {
+    async findByName(name: string) {
+        // const gym = await prismaDatabase.gym.findUnique({
+        //     where: { title: name }
         // });
-        // return user;
+        // return gym;
+    }
+    async findById(id: string) {
+        const gym = await prismaDatabase.gym.findUnique({
+            where: { id }
+        });
+        return gym;
     }
 
     async create(data: Prisma.GymCreateInput) {
