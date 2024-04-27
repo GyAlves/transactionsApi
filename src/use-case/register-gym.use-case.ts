@@ -27,7 +27,7 @@ export class RegisterGymUseCase {
                 
         const gym = await this.gymsRepository.create(
             {
-                title: title.toLowerCase().trim(),
+                title,
                 description,
                 phone,
                 latitude,

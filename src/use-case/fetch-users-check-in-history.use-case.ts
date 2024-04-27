@@ -1,13 +1,15 @@
 
 // interfaces
 import { ICheckInRepository } from "@/repositories/check-ins-repository.interface";
+import { CheckIn } from "@prisma/client";
 
-interface IGetUserMetricsRequest {
+interface IFetchUserCheckInHistoryRequest {
     userId: string;
+    page: number;
 }
 
-interface IGetUserMetricsResponse {
-    checkInsCount: number
+interface IFetchUserCheckInHistoryResponse {
+    checkIns: CheckIn[]
 }
 
 export class FetchUserCheckInHistoryUseCase {
@@ -15,11 +17,11 @@ export class FetchUserCheckInHistoryUseCase {
         private checkInRepository: ICheckInRepository
     ){}
 
-    async execute({ userId }: IGetUserMetricsRequest): Promise<IGetUserMetricsResponse> {
+    async execute({ userId, page }: IFetchUserCheckInHistoryRequest): Promise<IFetchUserCheckInHistoryResponse> {
 
-        const checkInsCount = await this.checkInRepository.countByUserId(userId);
+       const checkIns = await this.checkInRepository.findManyByUserId(userId, page);
 
-        return { checkInsCount }
+       return { checkIns }
 
     }
 }

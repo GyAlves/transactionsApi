@@ -18,14 +18,15 @@ describe('Create Gym Use Case', () => {
       sut = new RegisterGymUseCase(gymsRepository)
     })
   
-    it('should create a gym', async () => {
+    it('should be able to create a gym', async () => {
+      
       const { gym } = await sut.execute({
         title: 'JavaScript Gym',
         description: "Gym description",
         phone: "phone",
         latitude: -27.2092052,
         longitude: -49.6401091,
-      })
+      });
   
       expect(gym.id).toEqual(expect.any(String))
     });

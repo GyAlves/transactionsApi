@@ -5,11 +5,12 @@ import { Gym } from "@prisma/client";
 import { IGymsRepository } from "@/repositories/gyms-repository.interface";
 
 interface IFindGymByNameRequest {
-    name: string;
+    query: string;
+    page: number;
 }
 
 interface IFindGymByNameResponse {
-    gym: Gym | null;
+    gyms: Gym[];
 }
 
 // error-handling
@@ -19,10 +20,10 @@ export class FindGymByNameUseCase {
         private gymsRepository: IGymsRepository
     ){}
 
-    async execute({ name }: IFindGymByNameRequest): Promise<IFindGymByNameResponse>{
+    async execute({ query, page }: IFindGymByNameRequest): Promise<IFindGymByNameResponse>{
                 
-        const gym = await this.gymsRepository.findByName(name);
-        return { gym };
+        const gyms = await this.gymsRepository.searchMany(query, page);
+        return { gyms };
 
     }
 }

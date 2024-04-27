@@ -36,9 +36,12 @@ export class InMemoryGymRepository implements IGymsRepository {
         return gym;
     }
 
-    async findByName(name: string) {
-        const gym = this.items.find(gym => gym.title === name);
-        return gym || null;
+    async searchMany(query: string, page:number) {
+        const gyms = this.items
+            .filter(gym => gym.title.includes(query))
+            .slice((page - 1) * 20, page + 20)
+
+        return gyms;
     }
 
     async findById(id: string) {
