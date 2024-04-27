@@ -50,7 +50,7 @@ export class InMemoryGymRepository implements IGymsRepository {
         return gym || null;
     }
 
-    async findManyNearby(params: FindNearbyGymsParams){
+    async findManyNearby(params: FindNearbyGymsParams) {
         const gyms = this.items.filter(item => {
 
             const distance = getDistanceBetweenCoordinates(

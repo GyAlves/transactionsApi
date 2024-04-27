@@ -52,7 +52,7 @@ describe('Fetch nearby Gyms Use Case', () => {
       for(let i = 1; i <= 22; i++) {
 
         await gymsRepository.create({
-          title: `JavaScript Gym ${i}`,
+          title: `JavaScript Gym-${i}`,
           description: "Gym description",
           phone: "phone",
           latitude: -27.2092052,
@@ -69,8 +69,8 @@ describe('Fetch nearby Gyms Use Case', () => {
       expect(gyms).toHaveLength(2);
 
       expect(gyms).toEqual([
-        expect.objectContaining({ title: 'JavaScript Gym 21' }),
-        expect.objectContaining({ title: 'JavaScript Gym 22' }),
+        expect.objectContaining({ title: 'JavaScript Gym-21' }),
+        expect.objectContaining({ title: 'JavaScript Gym-22' }),
       ]); 
 
     });
