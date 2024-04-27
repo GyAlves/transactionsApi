@@ -20,6 +20,12 @@ describe('Register CheckIn Use Case', () => {
       checkInsRepository = new InMemoryCheckInsRepository();
       gymsRepository = new InMemoryGymRepository();
       sut = new ValidateCheckInUseCase(checkInsRepository);
+
+      vi.useFakeTimers();
+    })
+
+    afterEach(() => {
+      vi.useRealTimers();
     })
 
     it('should register a check-in', async () => {
@@ -49,4 +55,21 @@ describe('Register CheckIn Use Case', () => {
         }).rejects.toBeInstanceOf(ResourceNotFoundError)
     });
 
-})
+    it('should not be able to register a check-in after 20min of its creation', async () => {
+
+      vi.setSystemTime(new Date(20223,0,1, 13,40));
+
+      const createdCheckIn = await checkInsRepository.create({
+        gym_id: "gym-id",
+        user_id: '1234',
+      });
+
+      const twentyOneMinutesInMs = 1000 * 60 * 21; 
+      vi.advanceTimersByTime(twentyOneMinutesInMs);
+
+      expect( async () => {
+        await sut.execute({ checkInId: createdCheckIn.id });
+      }).rejects.toBeInstanceOf(Error)
+
+    });
+  })
