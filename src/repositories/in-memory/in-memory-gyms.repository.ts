@@ -35,5 +35,10 @@ export class InMemoryGymRepository implements IGymsRepository {
         
         return gym;
     }
+
+    async findByName(name: string) {
+        const gym = this.items.find(gym => gym.title === name);
+        return gym || null;
+    }
     
 }

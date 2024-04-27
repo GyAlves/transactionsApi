@@ -5,29 +5,33 @@ import { describe, expect, it, beforeEach } from "vitest";
 import { InMemoryGymRepository } from "@/repositories/in-memory/in-memory-gyms.repository";
 
 // use-cases
-import { RegisterGymUseCase } from "../register-gym.use-case";
+import { FindGymByNameUseCase } from "../find-gym-by-name.use-case";
 
 // error-handling
-import { GymAlreadyExistsError } from "../errors/gym-already-exists.error";
 
 let gymsRepository: InMemoryGymRepository;
-let sut: RegisterGymUseCase;
-describe('Create Gym Use Case', () => {
+let sut: FindGymByNameUseCase;
+describe('Find Gym By Name Use Case', () => {
     beforeEach(() => {
       gymsRepository = new InMemoryGymRepository()
-      sut = new RegisterGymUseCase(gymsRepository)
+      sut = new FindGymByNameUseCase(gymsRepository)
     })
   
-    it('should create a gym', async () => {
-      const { gym } = await sut.execute({
+    it('should find a gym by its name', async () => {
+
+      await gymsRepository.create({
         title: 'JavaScript Gym',
         description: "Gym description",
         phone: "phone",
         latitude: -27.2092052,
         longitude: -49.6401091,
       })
-  
-      expect(gym.id).toEqual(expect.any(String))
+
+      const { gym } = await sut.execute({
+        name: "JavaScript Gym"
+      })
+      
+      expect(gym?.id).toEqual(expect.any(String))
     });
 
   })

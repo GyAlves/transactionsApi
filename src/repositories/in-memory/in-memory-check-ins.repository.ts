@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 
 // interfaces
 import { ICheckInRepository } from "../check-ins-repository.interface";
+import dayjs from "dayjs";
 
 export class InMemoryCheckInsRepository implements ICheckInRepository {
 
@@ -26,6 +27,26 @@ export class InMemoryCheckInsRepository implements ICheckInRepository {
     async countByUserId(userId: string): Promise<number> {
         const checkIns = this.items.filter(checkIn => checkIn.user_id === userId).length;
         return checkIns;
+    }
+
+    async findByUserIdOnDate(userId: string, date: Date): Promise<CheckIn | null> {
+
+        const startOfTheDay = dayjs(date).startOf('day');
+        const endOfTheDay = dayjs(date).endOf('day');
+
+        const checkInOnSameDay = this.items.find(checkIn => {
+            const checkInDate = dayjs(checkIn.created_at);
+
+            const isOnSameDate = checkInDate.isAfter(startOfTheDay) && checkInDate.isBefore(endOfTheDay);
+
+            return checkIn.user_id === userId && isOnSameDate;
+
+        });
+
+        if(!checkInOnSameDay) return null;
+
+        return checkInOnSameDay;
+
     }
 
 }

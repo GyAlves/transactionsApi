@@ -36,7 +36,7 @@ describe('User Profile Use Case', () => {
 
     it('should not be able to get user profile with wrong id', async () => {
 
-        expect(async () => {
+        await expect( async () => {
             await stu.execute({ userId: '1234' })
         }).rejects.toBeInstanceOf(ResourceNotFoundError)
     });

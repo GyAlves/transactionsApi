@@ -1,5 +1,5 @@
 // dependencies
-import { Prisma } from "@prisma/client";
+import { CheckIn, Prisma } from "@prisma/client";
 import { prisma as prismaDatabase } from "@/lib/prisma";
 
 // interfaces
@@ -21,4 +21,14 @@ export class PrismaCheckInsRepository implements ICheckInRepository {
        return checkIn;
     }
 
+    async findByUserIdOnDate(userId: string, date: Date): Promise<CheckIn | null> {
+        const checkIn = await prismaDatabase.checkIn.findFirst({
+            where: {
+                user_id: userId,
+                created_at: date
+            }
+        })
+
+        return checkIn || null;
+    }
 }
