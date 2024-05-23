@@ -7,21 +7,18 @@ import { IUsersRepository } from "../users-repository.interface";
 
 export class PrismaUserRepository implements IUsersRepository {
     async findById(id: string) {
-        const user = await prismaDatabase.user.findUnique({
+        return await prismaDatabase.user.findUnique({
             where: { id }
         });
-        return user;
     }
 
     async create(data: Prisma.UserCreateInput) {
-        const user = await prismaDatabase.user.create({data});
-        return user;
+        return await prismaDatabase.user.create({ data });
     }
 
     async findByEmail(email:string) {
-        const user = await prismaDatabase.user.findUnique({
+        return await prismaDatabase.user.findUnique({
             where: { email }
         });
-        return user;
     }
 }

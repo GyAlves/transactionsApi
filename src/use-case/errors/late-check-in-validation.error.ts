@@ -1,6 +1,6 @@
 
 export class  LateCheckInValidationError extends Error {
     constructor() {
-        super('Exceeded maximum range for check in validation');
+        super('Exceeded maximum 20min range for check in validation');
     }
 }

@@ -6,7 +6,7 @@ import { IGymsRepository } from "@/repositories/gyms-repository.interface";
 
 interface IFindGymByNameRequest {
     query: string;
-    page: number;
+    page: string;
 }
 
 interface IFindGymByNameResponse {
@@ -22,7 +22,7 @@ export class FindGymByNameUseCase {
 
     async execute({ query, page }: IFindGymByNameRequest): Promise<IFindGymByNameResponse>{
                 
-        const gyms = await this.gymsRepository.searchMany(query, page);
+        const gyms = await this.gymsRepository.searchMany(query, Number(page));
         return { gyms };
 
     }

@@ -6,7 +6,7 @@ import { compare } from 'bcryptjs';
 import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-users.repository";
 
 // use-cases
-import { RegisterUserUseCase } from "../register-customer.use-case";
+import { RegisterUserUseCase } from "../register-user.use-case";
 
 // error-handling
 import { UserAlreadyExistsError } from "../errors/user-already-exists.error";
