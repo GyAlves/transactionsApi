@@ -17,6 +17,7 @@ interface IAuthenticateUserResponses {
 
 // error
 import { InvalidUserCredentialsError } from "./errors/invalid-user-credentials.error";
+import { env } from "@/env";
 
 export class AuthenticateUserUseCase {
 

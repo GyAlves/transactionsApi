@@ -6,6 +6,7 @@ const envSchema = z.object({
     PORT: z.number().default(3000),
     ENVIRONMENT: z.enum(["development", "production", "test"]).default("production"),
     DATABASE_URL: z.string(),
+    JWT_SECRET: z.string(),
 });
 
 const envValidation = envSchema.safeParse(process.env);

@@ -1,6 +1,8 @@
 // dependencies
 import { FastifyRequest, FastifyReply } from 'fastify';
+import jwt from 'jsonwebtoken';
 import { z } from 'zod';
+import { env } from '@/env';
 
 // error-handling
 import { InvalidUserCredentialsError } from '@/use-case/errors/invalid-user-credentials.error';
@@ -21,7 +23,13 @@ export async function AuthenticateUserController(request: FastifyRequest, reply:
 
         const { user } = await authenticateUserUseCase.execute({ email, password });
 
-        reply.status(201).send({ message: 'User authenticated successfully', user});
+        const jwtToken = await reply.jwtSign({}, {
+            sign: {
+                sub: user.id
+            }
+        });
+
+        reply.status(201).send({ message: 'User authenticated successfully', jwt: jwtToken });
 
     } catch (error) {
         
